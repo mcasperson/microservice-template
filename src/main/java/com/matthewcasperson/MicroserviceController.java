@@ -101,7 +101,10 @@ public class MicroserviceController {
                 .withAuditLogger(logger)
                 .withEntityDictionary(dictionary)
                 .build();
-
+        /*
+            This is the object that we use to enrich the JPA entities with security
+            information.
+         */
         dictionary.bindInitializer(initializer, MicroserviceKeyValue.class);
 
 		/*
