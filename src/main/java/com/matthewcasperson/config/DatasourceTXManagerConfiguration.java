@@ -12,12 +12,12 @@ import javax.persistence.EntityManagerFactory;
  */
 public class DatasourceTXManagerConfiguration {
 
-	@Bean(name = "MicroserviceTX")
-	public PlatformTransactionManager lookupTransactionManager(
-		@Qualifier("MicroserviceEMF") EntityManagerFactory lookupEntityManagerFactory
-	) {
-		final JpaTransactionManager txManager = new JpaTransactionManager();
-		txManager.setEntityManagerFactory(lookupEntityManagerFactory);
-		return txManager;
-	}
+    @Bean(name = "MicroserviceTX")
+    public PlatformTransactionManager lookupTransactionManager(
+        @Qualifier("MicroserviceEMF") EntityManagerFactory lookupEntityManagerFactory
+    ) {
+        final JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(lookupEntityManagerFactory);
+        return txManager;
+    }
 }

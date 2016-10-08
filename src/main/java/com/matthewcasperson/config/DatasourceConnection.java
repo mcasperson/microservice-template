@@ -20,35 +20,35 @@ import javax.sql.DataSource;
 @Configuration
 public class DatasourceConnection {
 
-	private static final String H2_JDBC = "jdbc:h2:mem:microservice;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS MicroserviceDatabase";
-	private static final String H2_USER = "";
-	private static final String H2_PASSWORD = "";
-	private static final String H2_DRIVER = "org.h2.Driver";
+    private static final String H2_JDBC = "jdbc:h2:mem:microservice;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS MicroserviceDatabase";
+    private static final String H2_USER = "";
+    private static final String H2_PASSWORD = "";
+    private static final String H2_DRIVER = "org.h2.Driver";
 
-	/**
-	 * This is where Tomcat has created our datasource
-	 */
-	private static final String LOOKUP_DATASOURCE_JNDI = "java:/comp/env/jdbc/microservice";
+    /**
+     * This is where Tomcat has created our datasource
+     */
+    private static final String LOOKUP_DATASOURCE_JNDI = "java:/comp/env/jdbc/microservice";
 
-	@Bean(name = "MicroserviceDS")
-	@Profile("!TEST")
-	public DataSource jndiLookupDataSource() throws Exception {
-		return (DataSource) new JndiTemplate().lookup(LOOKUP_DATASOURCE_JNDI);
-	}
+    @Bean(name = "MicroserviceDS")
+    @Profile("!TEST")
+    public DataSource jndiLookupDataSource() throws Exception {
+        return (DataSource) new JndiTemplate().lookup(LOOKUP_DATASOURCE_JNDI);
+    }
 
-	/**
-	 * When running tests we connect to an in memory H2 database
-	 */
-	@Bean(name = "MicroserviceDS")
-	@Profile("TEST")
-	public DataSource driverManagerLookupDataSource() throws Exception {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    /**
+     * When running tests we connect to an in memory H2 database
+     */
+    @Bean(name = "MicroserviceDS")
+    @Profile("TEST")
+    public DataSource driverManagerLookupDataSource() throws Exception {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-		dataSource.setDriverClassName(H2_DRIVER);
-		dataSource.setUrl(H2_JDBC);
-		dataSource.setUsername(H2_USER);
-		dataSource.setPassword(H2_PASSWORD);
+        dataSource.setDriverClassName(H2_DRIVER);
+        dataSource.setUrl(H2_JDBC);
+        dataSource.setUsername(H2_USER);
+        dataSource.setPassword(H2_PASSWORD);
 
-		return dataSource;
-	}
+        return dataSource;
+    }
 }

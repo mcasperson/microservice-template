@@ -17,43 +17,43 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableJpaRepositories(
-	// This needs to match the entity manager factory created below
-	entityManagerFactoryRef = "MicroserviceEMF",
-	// This needs to match the transaction manager created below
-	transactionManagerRef = "MicroserviceTX",
-	// This is the package that holds the Spring repository using the classes exposed by this EMF
-	basePackages = "com.matthewcasperson.repository"
+    // This needs to match the entity manager factory created below
+    entityManagerFactoryRef = "MicroserviceEMF",
+    // This needs to match the transaction manager created below
+    transactionManagerRef = "MicroserviceTX",
+    // This is the package that holds the Spring repository using the classes exposed by this EMF
+    basePackages = "com.matthewcasperson.repository"
 )
 @EnableTransactionManagement
 @Import({
-	DatasourceConnection.class,
-	DatasourceEmfConfiguration.class,
-	DatasourceTXManagerConfiguration.class
+    DatasourceConnection.class,
+    DatasourceEmfConfiguration.class,
+    DatasourceTXManagerConfiguration.class
 })
 public class DatasourceConfiguration {
-	@Bean
-	public TomcatEmbeddedServletContainerFactory tomcatFactory() {
-		return new TomcatEmbeddedServletContainerFactory() {
+    @Bean
+    public TomcatEmbeddedServletContainerFactory tomcatFactory() {
+        return new TomcatEmbeddedServletContainerFactory() {
 
-			@Override
-			protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(final Tomcat tomcat) {
-				tomcat.enableNaming();
-				return super.getTomcatEmbeddedServletContainer(tomcat);
-			}
+            @Override
+            protected TomcatEmbeddedServletContainer getTomcatEmbeddedServletContainer(final Tomcat tomcat) {
+                tomcat.enableNaming();
+                return super.getTomcatEmbeddedServletContainer(tomcat);
+            }
 
-			@Override
-			protected void postProcessContext(Context context) {
-				ContextResource resource = new ContextResource();
-				resource.setName("jdbc/microservice");
-				resource.setType(DataSource.class.getName());
-				resource.setProperty("factory", "org.apache.tomcat.jdbc.pool.DataSourceFactory");
-				resource.setProperty("driverClassName", "com.mysql.jdbc.Driver");
-				resource.setProperty("username", "root");
-				resource.setProperty("password", "password1!");
-				resource.setProperty("url", "jdbc:mysql://localhost:3306/microservice");
+            @Override
+            protected void postProcessContext(Context context) {
+                ContextResource resource = new ContextResource();
+                resource.setName("jdbc/microservice");
+                resource.setType(DataSource.class.getName());
+                resource.setProperty("factory", "org.apache.tomcat.jdbc.pool.DataSourceFactory");
+                resource.setProperty("driverClassName", "com.mysql.jdbc.Driver");
+                resource.setProperty("username", "root");
+                resource.setProperty("password", "password1!");
+                resource.setProperty("url", "jdbc:mysql://localhost:3306/microservice");
 
-				context.getNamingResources().addResource(resource);
-			}
-		};
-	}
+                context.getNamingResources().addResource(resource);
+            }
+        };
+    }
 }
