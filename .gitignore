@@ -1,0 +1,7 @@
+.idea
+npm-debug.log
+/build
+/out
+/classes
+/.gradle
+/*.jar
