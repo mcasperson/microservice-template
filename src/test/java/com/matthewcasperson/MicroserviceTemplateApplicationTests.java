@@ -11,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.EntityManager;
@@ -27,7 +24,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * Test suite that verifies the behaviour of the microservice. This test uses a H2
@@ -107,9 +103,16 @@ public class MicroserviceTemplateApplicationTests {
 		}
 	}
 
+	/**
+	 * In this test we are calling the JSON API GET endpoint, which would normally
+     * return a collection of the entities in the absence of a filter. However,
+     * only one entity will pass the security test, so our returned collection
+     * only has one entity.
+	 * @throws Exception
+	 */
 	@Test
 	public void elideFilterTest() throws Exception {
-		final ResultActions resultActions = mockMvc.perform(
+		mockMvc.perform(
 				get("/microservice/1.0/microserviceKeyValue?secret=Key1Secret"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.data", hasSize(1)));
