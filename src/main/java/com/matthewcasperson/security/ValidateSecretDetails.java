@@ -12,7 +12,7 @@ import java.util.Optional;
  * This security check verifies that the quote id, dob and postcode that the client submitted
  * matches the details that were retrieved from DISC. These must match or the result is not returned.
  */
-public class ValidateQuoteDetails extends InlineCheck<MicroserviceKeyValue> {
+public class ValidateSecretDetails extends InlineCheck<MicroserviceKeyValue> {
 
 	@Override
 	public boolean ok(final MicroserviceKeyValue object, final RequestScope requestScope, final Optional<ChangeSpec> changeSpec) {

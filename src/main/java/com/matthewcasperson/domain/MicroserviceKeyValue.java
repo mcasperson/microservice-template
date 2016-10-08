@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 /**
  * Auotgenerated JPA entity
  */
-@ReadPermission(expression = "Client supplied correct details")
+@ReadPermission(expression = "Client supplied secret")
 @Entity
 @Table(name = "Microservice", schema = "MicroserviceDatabase")
 public class MicroserviceKeyValue {

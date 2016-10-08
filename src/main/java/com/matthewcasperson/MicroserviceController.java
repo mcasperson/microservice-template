@@ -1,10 +1,7 @@
 package com.matthewcasperson;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.matthewcasperson.MicroserviceController.BASE_URL;
-
 import com.matthewcasperson.security.OpaqueUser;
-import com.matthewcasperson.security.ValidateQuoteDetails;
+import com.matthewcasperson.security.ValidateSecretDetails;
 import com.yahoo.elide.Elide;
 import com.yahoo.elide.ElideResponse;
 import com.yahoo.elide.audit.AuditLogger;
@@ -13,23 +10,21 @@ import com.yahoo.elide.core.DataStore;
 import com.yahoo.elide.core.EntityDictionary;
 import com.yahoo.elide.datastores.hibernate5.HibernateStore;
 import com.yahoo.elide.security.checks.Check;
-
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.matthewcasperson.MicroserviceController.BASE_URL;
 
 /**
  * This is the service that applications can call to determine what application was
@@ -90,7 +85,7 @@ public class MicroserviceController {
 			has been sent to the client
 		 */
         final Map<String, Class<? extends Check>> checks = new HashMap<>();
-        checks.put("Client can access hostname", ValidateQuoteDetails.class);
+        checks.put("Client supplied secret", ValidateSecretDetails.class);
         final EntityDictionary dictionary = new EntityDictionary(checks);
 
         /*

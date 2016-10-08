@@ -8,8 +8,11 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -31,8 +34,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * in memory database to simulate the datastore, providing a convenient way to test all
  * the JPA/Repository/Elide things without needing any external services.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles("TEST")
 public class MicroserviceTemplateApplicationTests {
 
@@ -55,6 +59,7 @@ public class MicroserviceTemplateApplicationTests {
 	private static final String CREATE_TABLE = "CREATE TABLE MicroserviceDatabase.Microservice(" +
 			"id int auto_increment primary key, key varchar(45), value varchar(45))";
 
+	@Autowired
 	private MockMvc mockMvc;
 
 	@Autowired
@@ -81,8 +86,6 @@ public class MicroserviceTemplateApplicationTests {
 			em.createNativeQuery(CREATE_TABLE).executeUpdate();
 			em.getTransaction().commit();
 
-			mockMvc = webAppContextSetup(webApplicationContext).build();
-
 			/*
 				Save some mock data
 			 */
@@ -107,7 +110,7 @@ public class MicroserviceTemplateApplicationTests {
 	@Test
 	public void elideFilterTest() throws Exception {
 		final ResultActions resultActions = mockMvc.perform(
-				get("/microservice/microserviceKeyValue?secret=dontHackMe"))
+				get("/microservice/1.0/microserviceKeyValue?secret=dontHackMe"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.data", hasSize(1)));
 	}
