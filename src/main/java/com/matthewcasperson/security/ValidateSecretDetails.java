@@ -9,8 +9,8 @@ import com.yahoo.elide.security.checks.InlineCheck;
 import java.util.Optional;
 
 /**
- * This security check verifies that the quote id, dob and postcode that the client submitted
- * matches the details that were retrieved from DISC. These must match or the result is not returned.
+ * This security check verifies that the secret string supplied by the client
+ * matches the secret assigned to the entity.
  */
 public class ValidateSecretDetails extends InlineCheck<MicroserviceKeyValue> {
 
