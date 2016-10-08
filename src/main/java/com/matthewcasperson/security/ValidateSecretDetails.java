@@ -17,7 +17,7 @@ public class ValidateSecretDetails extends InlineCheck<MicroserviceKeyValue> {
 	@Override
 	public boolean ok(final MicroserviceKeyValue object, final RequestScope requestScope, final Optional<ChangeSpec> changeSpec) {
 		final OpaqueUser user = (OpaqueUser)requestScope.getUser().getOpaqueUser();
-        return true;
+        return user.getSecret().equals(object.getSecret());
 	}
 
 	@Override

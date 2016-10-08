@@ -1,5 +1,6 @@
 package com.matthewcasperson;
 
+import com.matthewcasperson.domain.MicroserviceKeyValue;
 import com.matthewcasperson.security.OpaqueUser;
 import com.matthewcasperson.security.ValidateSecretDetails;
 import com.yahoo.elide.Elide;
@@ -8,6 +9,7 @@ import com.yahoo.elide.audit.AuditLogger;
 import com.yahoo.elide.audit.Slf4jLogger;
 import com.yahoo.elide.core.DataStore;
 import com.yahoo.elide.core.EntityDictionary;
+import com.yahoo.elide.core.Initializer;
 import com.yahoo.elide.datastores.hibernate5.HibernateStore;
 import com.yahoo.elide.security.checks.Check;
 import org.hibernate.SessionFactory;
@@ -38,6 +40,10 @@ public class MicroserviceController {
 
     @Autowired
     private EntityManagerFactory emf;
+
+    @Autowired
+    private Initializer initializer;
+
     /**
      * Converts a plain map to a multivalued map
      * @param input The original map
@@ -91,7 +97,12 @@ public class MicroserviceController {
         /*
             Create the Elide object
          */
-        final Elide elide = new Elide(logger, dataStore, dictionary);
+        final Elide elide = new Elide.Builder(dataStore)
+                .withAuditLogger(logger)
+                .withEntityDictionary(dictionary)
+                .build();
+
+        dictionary.bindInitializer(initializer, MicroserviceKeyValue.class);
 
 		/*
             Convert the map to a MultivaluedMap, which we can then pass to Elide

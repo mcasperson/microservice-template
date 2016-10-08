@@ -94,7 +94,7 @@ public class MicroserviceKeyValue {
 		return secret;
 	}
 
-	public void setSecret(String hostName) {
+	public void setSecret(String secret) {
 		this.secret = secret;
 	}
 }

@@ -110,7 +110,7 @@ public class MicroserviceTemplateApplicationTests {
 	@Test
 	public void elideFilterTest() throws Exception {
 		final ResultActions resultActions = mockMvc.perform(
-				get("/microservice/1.0/microserviceKeyValue?secret=dontHackMe"))
+				get("/microservice/1.0/microserviceKeyValue?secret=Key1Secret"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.data", hasSize(1)));
 	}
