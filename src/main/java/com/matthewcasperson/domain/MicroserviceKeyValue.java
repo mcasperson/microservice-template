@@ -13,7 +13,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Auotgenerated JPA entity
+ * Auotgenerated JPA entity, with some additions to support Elide.
+ * Notably we have added the @ReadPermission annotation, which will
+ * only allow entities that pass the rule we have called
+ * "Client supplied secret".
  */
 @ReadPermission(expression = "Client supplied secret")
 @Entity

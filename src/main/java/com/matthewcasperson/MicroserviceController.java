@@ -113,17 +113,12 @@ public class MicroserviceController {
         final MultivaluedMap<String, String> params = fromMap(allRequestParams);
 
         /*
-            There is a bug in Elide on Windows that will convert a leading forward slash into a backslash,
-            which then displays the error "token recognition error at: '\\'".
-         */
-        final String fixedPath = restOfTheUrl.replaceAll("^/", "");
-        /*
             This is where the magic happens. We pass in the path, the params, and a place holder security
             object (which we won't be using here in any meaningful way, but can be used by Elide
             to authorize certain actions), and we get back a response with all the information
             we need.
          */
-        final ElideResponse response = elide.get(fixedPath, params, new OpaqueUser(secret));
+        final ElideResponse response = elide.get(restOfTheUrl, params, new OpaqueUser(secret));
         /*
             Return the JSON response to the client
          */
